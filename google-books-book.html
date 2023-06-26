@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>google-books-book</title>
+</head>
+<body>
+    <center><div id="mainDiv"></div></center>
+    <div id="secondDiv"></div>
+
+    <script>
+        const parent = document.getElementById('mainDiv');
+        const secondParent = document.getElementById('secondDiv');
+
+        fetch('google-books-book.json')
+            .then(response => response.json())
+            .then(jsonData => {
+
+                const bookTitle = document.createElement('h1');
+                bookTitle.textContent = jsonData.volumeInfo.title;
+                parent.appendChild(bookTitle);
+
+                const subTitle = document.createElement('p');
+                subTitle.textContent = jsonData.volumeInfo.subtitle;
+                parent.appendChild(subTitle);
+
+                const bookAuthor = document.createElement('p');
+                bookAuthor.textContent = 'By: ' + jsonData.volumeInfo.authors;
+                parent.appendChild(bookAuthor);
+                
+                const bookImage = document.createElement('img');
+                bookImage.src = jsonData.volumeInfo.imageLinks.thumbnail;
+                parent.appendChild(bookImage);
+
+                for (const key in jsonData.volumeInfo) {
+                    
+                    //stores the value of the key as a variable
+                    const value = jsonData[key];
+                    
+                    //skips certain keys that have alredly been displayed on the page
+                    if (key !== 'title' && key !== 'subtitle' && key !== 'authors' && key !== 'imageLinks') {
+                    
+                        if (Array.isArray(value)) {
+                            const arrayTitle = document.createElement('h2');
+                            arrayTitle.textContent = key;
+                            secondParent.appendChild(arrayTitle);
+
+                            const list = document.createElement('ul');
+
+                            for (const item of value) {
+                                const listItem = doucment.createElement('li');
+                                listItem.textContent = item;
+                                list.appendChild(listItem);
+                            }
+
+                            secondParent.appendChild(list);
+
+                        }
+                        else {
+                            const element = document.createElement('p');
+                            element.innerHTML = `<b>${key}:</b> ${jsonData.volumeInfo[key]}`;
+                            secondParent.appendChild(element);
+                        }
+                    
+                    
+                        
+                    }
+                }
+            })
+
+               
+
+
+            
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+<!--  https://howtocreateapps.com/fetch-and-display-json-html-javascript/#google_vignette  -->
+<!-- https://bobbyhadz.com/blog/display-json-data-in-html-using-javascript -->
