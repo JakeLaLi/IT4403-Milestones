@@ -33,26 +33,30 @@
                 bookImage.src = jsonData.volumeInfo.imageLinks.thumbnail;
                 parent.appendChild(bookImage);
 
-                for (const key in jsonData.volumeInfo) {
+                for (var key in jsonData.volumeInfo) {
                     
                     //stores the value of the key as a variable
-                    const value = jsonData[key];
-                    
+                    var value = jsonData.volumeInfo[key];
+                    console.log(jsonData);
+                    console.log(key);
                     //skips certain keys that have alredly been displayed on the page
                     if (key !== 'title' && key !== 'subtitle' && key !== 'authors' && key !== 'imageLinks') {
-                    
-                        if (Array.isArray(value)) {
+                        console.log(Array.isArray(value));
+                        if (Array.isArray(value) && key !== 'industryIdentifiers') {
+                            
                             const arrayTitle = document.createElement('h2');
                             arrayTitle.textContent = key;
                             secondParent.appendChild(arrayTitle);
 
                             const list = document.createElement('ul');
-
-                            for (const item of value) {
-                                const listItem = doucment.createElement('li');
+                            console.log(value);
+                            for (var item of value) {
+                                console.log(item);
+                                const listItem = document.createElement('p');
                                 listItem.textContent = item;
                                 list.appendChild(listItem);
                             }
+                            
 
                             secondParent.appendChild(list);
 
